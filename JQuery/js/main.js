@@ -1,6 +1,6 @@
 $(document).ready(function(){
 	var ins = ''; // Variable insertable en el DOM
-	var pagina_inicial = 'http:/pokeapi.co/api/v2/pokemon/?limit=20&offset='; // GET pokeapi.co
+	var pagina_inicial = 'http:/pokeapi.co/api/v2/pokemon/?limit=20&offset='; // GET pokeapi.co : limitar a 721 pokemons
 	var pokes = []; // Array con las variables de los pokemon
 	var offset = 0; // Variable cursor identificador pagina : en series de 20
 	var pagina_actual = pagina_inicial + offset;
