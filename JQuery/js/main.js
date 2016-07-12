@@ -1,23 +1,50 @@
 $(document).ready(function(){
-	var ins = '';
-	$.getJSON('http://pokeapi.co/api/v2/pokemon/', function(resp){
-		var pokes = [];
-		$.each(resp.results, function(p, pokemon){
-			pokes.push({name : pokemon.name, url : pokemon.url});
+	var ins = ''; // Variable insertable en el DOM
+	var pagina_inicial = 'http:/pokeapi.co/api/v2/pokemon/?limit=20&offset='; // GET pokeapi.co
+	var pokes = []; // Array con las variables de los pokemon
+	var offset = 0; // Variable cursor identificador pagina : en series de 20
+	var pagina_actual = pagina_inicial + offset;
+
+	function init(url){
+		$.getJSON(url, function(resp){
+			$.each(resp.results, function(p, pokemon){
+				pokes.push({name : pokemon.name, url : pokemon.url, id : pokemon.id });
+			});
+			$.each(pokes, function(i, pokemon){
+				ins += '<div class="col s6 m4 l3 center"><div class="card">';
+				ins += '<div class="card-content"><span class="card-title">' + pokemon.name + '</span><p class="purple-text">' + pokemon.name + '</p></div>';
+				ins += '</div></div>';
+			});
+			$('#insert').html(ins);
 		});
-		$.each(pokes, function(i, pokemon){
-			var o = i++;
-			var count = "";
-			ins += '<div class="col s3 center"><div class="card">';
-			if(o < 9){
-				ins += '<div class="card-image"><img src=" http://assets.pokemon.com/assets/cms2/img/pokedex/full/00' + i + '.png"><span class="card-title purple-text">' + pokemon.name + '</span></div>';
-			} else if (o < 100) {
-				ins += '<div class="card-image"><img src=" http://assets.pokemon.com/assets/cms2/img/pokedex/full/0' + i + '.png"><span class="card-title">' + pokemon.name + '</span></div>';
-			}
-			ins += '<div class="card-content"><p class="red-text">' + pokemon.name.toUpperCase() + '</p></div>';
-//			ins += '<div class="card-action"><a href="' + pokemon.url + '">' + pokemon.name + '</a></div>';
-			ins += '</div></div>';
-		});
-		$('#insert').html(ins);
+		pokes = [];
+	}
+	
+	function anteriorPagina(){ // Cambiar a la anterior pagina : DEPRECATED
+		if (offset == 0){
+
+		} else {
+			offset -= 20;
+			pagina_actual = pagina_inicial + offset;
+			init(pagina_actual);
+			console.log('anteriorPagina.pagina_actual: ' + pagina_actual);
+		}
+	}
+	function siguientePagina(){ // Cambiar a la anterior pagina
+		offset += 20;
+		pagina_actual = pagina_inicial + offset;
+		init(pagina_actual);
+		console.log('siguientePagina.pagina_actual: ' + pagina_actual);
+	}
+
+
+	// ********************** //
+
+	$('#next').on('click', function(){
+		// $('#insert').empty();
+		siguientePagina();
 	});
+
+	init(pagina_inicial);
+	
 });
