@@ -8,16 +8,15 @@ $(document).ready(function(){
 	function init(url){
 		$.getJSON(url, function(resp){
 			$.each(resp.results, function(p, pokemon){
-				pokes.push({name : pokemon.name, url : pokemon.url, id : pokemon.id });
+				pokes.push({name : pokemon.name, url : pokemon.url});
 			});
 			$.each(pokes, function(i, pokemon){
 				ins += '<div class="col s6 m4 l3 center"><div class="card">';
-				ins += '<div class="card-content"><span class="card-title">' + pokemon.name + '</span><p class="purple-text">' + pokemon.name + '</p></div>';
+				ins += '<div class="card-content"><span class="card-title">' + pokemon.name + '</span><br><a href="' + pokemon.url + '" class="purple-text"><p class="purple-text">' + pokemon.name + '</p></a></div>';
 				ins += '</div></div>';
 			});
 			$('#insert').html(ins);
 		});
-		pokes = [];
 	}
 	
 	function anteriorPagina(){ // Cambiar a la anterior pagina : DEPRECATED
